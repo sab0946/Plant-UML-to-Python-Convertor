@@ -1,4 +1,4 @@
-from module_builder.interpreter import Interpreter
+from .module_builder.interpreter import Interpreter
 import sys
 import cmd
 from plantweb.render import render_file
