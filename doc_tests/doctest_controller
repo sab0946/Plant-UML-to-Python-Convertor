@@ -1,5 +1,5 @@
 """
->>> from interpreter.controller import Main
+>>> from controller import Main
 >>> root = 'c:/test'
 >>> source = 'class_diagram_plantUML'
 >>> write_folder = 'test_result'

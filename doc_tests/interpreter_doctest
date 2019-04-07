@@ -1,5 +1,5 @@
 """
->>> from interpreter.module_builder.interpreter import Interpreter
+>>> from module_builder.interpreter import Interpreter
 >>> a = Interpreter()
 >>> a.add_file('c:/test/class_diagram_plantUML', 'test_result')
 >>> print(a.my_file)

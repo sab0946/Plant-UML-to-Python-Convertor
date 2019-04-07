@@ -1,5 +1,5 @@
 """
->>> from interpreter.module_builder.class_builder import ClassBuilder
+>>> from module_builder.class_builder import ClassBuilder
 >>> a = ClassBuilder()
 >>> a.build_class("ClassName", ["attribute1: string"], ["Method1(input):integer"], [("comp", "Class2")])
 >>> print(a.name)
