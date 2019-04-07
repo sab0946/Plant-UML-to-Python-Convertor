@@ -26,24 +26,6 @@ class Interpreter:
         new_class.build_class(class_name, attributes, methods, relationships)
         self.all_my_classbuilders.append(new_class)
 
-    def find_classes(self):
-        for class_info in self.my_class_content:
-            class_name = class_info.split(' ')[1]
-            attributes = []
-            methods = []
-            relationships = []
-            for line in class_info.split("\n"):
-                if line.find(":") != -1 and line.find("(") == -1:
-                    attributes.append(line)
-            for line in class_info.split("\n"):
-                if line.find("(") != -1:
-                    methods.append(line)
-            for relationship in self.my_relationship_content.split("\n"):
-                if RelationshipFinder.find_relationship(relationship, class_name):
-                    relationships.append(
-                        RelationshipFinder.find_relationship(relationship, class_name))
-            self.add_class(class_name, attributes, methods, relationships)
-
     def add_module(self, new_module_name, new_classes):
         new_module = Module()
         new_module.create_module(new_module_name, new_classes)
@@ -71,7 +53,9 @@ class FileReader (Interpreter):
     def add_file(self, file_name, new_module_name):
         self.my_file = file_name
         self.read_file()
-        self.find_classes()
+        my_classes = ClassFinder.find_classes(self.my_class_content, self.my_relationship_content)
+        for a_class in my_classes:
+            self.add_class(a_class[0], a_class[1], a_class[2], a_class[3])
         self.add_module(new_module_name, self.all_my_classbuilders)
 
     def read_file(self):
@@ -87,6 +71,32 @@ class FileReader (Interpreter):
         except FileNotFoundError as e:
             self.all_my_errors.append(e)
             print("Error - File not found")
+
+
+class ClassFinder:
+
+    class_list = []
+
+    @classmethod
+    def find_classes(cls, class_content_list, relationship_content):
+        for class_info in class_content_list:
+            class_name = class_info.split(' ')[1]
+            attributes = []
+            methods = []
+            relationships = []
+            for line in class_info.split("\n"):
+                if line.find(":") != -1 and line.find("(") == -1:
+                    attributes.append(line)
+            for line in class_info.split("\n"):
+                if line.find("(") != -1:
+                    methods.append(line)
+            for relationship in relationship_content.split("\n"):
+                if RelationshipFinder.find_relationship(relationship, class_name):
+                    relationships.append(
+                        RelationshipFinder.find_relationship(relationship, class_name))
+            new_tuple = (class_name, attributes, methods, relationships)
+            cls.class_list.append(new_tuple)
+        return cls.class_list
 
 
 class RelationshipFinder:
