@@ -1,4 +1,4 @@
-from module_builder.interpreter import Interpreter, DbCreator, ModuleShelver
+from module_builder.interpreter import UmlInterpreter, ModuleShelver
 import sys
 import cmd
 from plantweb.render import render_file
@@ -31,9 +31,8 @@ class Main(cmd.Cmd):
         elif self.source_file is None:
             print("Please enter the source file : source xxxx")
         else:
-            uml = Interpreter()
-            uml.add_file(self.source_file, self.write_folder)
-            uml.write_modules()
+            uml = UmlInterpreter()
+            uml.interpret(self.source_file, self.write_folder)
             if len(uml.all_my_errors) > 0:
                 for an_error in uml.all_my_errors:
                     print(an_error)
