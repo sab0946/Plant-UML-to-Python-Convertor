@@ -67,9 +67,6 @@ class FileReader (Interpreter):
 
     def __init__(self):
         Interpreter.__init__(self)
-        self.my_relationship_content = ""
-        self.my_class_content = []
-        self.all_my_errors = []
 
     def add_file(self, file_name, new_module_name):
         self.my_file = file_name
