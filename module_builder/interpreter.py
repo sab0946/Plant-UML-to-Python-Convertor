@@ -31,19 +31,6 @@ class Interpreter:
         new_module.create_module(new_module_name, new_classes)
         self.all_my_modules.append(new_module)
 
-    def write_modules(self):
-        for a_module in self.all_my_modules:
-            root_name = a_module.write_files()[0]
-            folder_content = a_module.write_files()[1]
-            for a_folder in folder_content:
-                try:
-                    file_name = f"{root_name}/{a_folder[0]}"
-                    with open(file_name, "w+") as f:
-                        f.write(a_folder[1])
-                except FileNotFoundError as e:
-                    self.all_my_errors.append(e)
-                    print("Error - Directory does not exist")
-
 
 class FileReader (Interpreter):
 
@@ -120,11 +107,41 @@ class RelationshipFinder:
                 return tuple(("extends", ext_class))
 
 
-class ModuleShelver (Interpreter):
-    """shelves the module data to a file"""
+class ModuleWriter(Interpreter):
 
     def __init__(self):
         Interpreter.__init__(self)
+
+    def write_modules(self):
+        for a_module in self.all_my_modules:
+            root_name = a_module.write_files()[0]
+            folder_content = a_module.write_files()[1]
+            for a_folder in folder_content:
+                try:
+                    file_name = f"{root_name}/{a_folder[0]}"
+                    with open(file_name, "w+") as f:
+                        f.write(a_folder[1])
+                except FileNotFoundError as e:
+                    self.all_my_errors.append(e)
+                    print("Error - Directory does not exist")
+
+
+class UmlInterpreter(FileReader, ModuleWriter):
+
+    def __init__(self):
+        FileReader.__init__(self)
+        ModuleWriter.__init__(self)
+
+    def interpret(self, source_file, write_folder):
+        self.add_file(source_file, write_folder)
+        self.write_modules()
+
+
+class ModuleShelver (UmlInterpreter):
+    """shelves the module data to a file"""
+
+    def __init__(self):
+        UmlInterpreter.__init__(self)
 
     def shelve_modules(self, shelf_file):
         shelf = Shelver(shelf_file)
@@ -133,11 +150,11 @@ class ModuleShelver (Interpreter):
         self.my_shelf = shelf.my_shelf_file
 
 
-class DbCreator (Interpreter):
+class DbCreator (UmlInterpreter):
     """creates a database writer class"""
 
     def __init__(self):
-        Interpreter.__init__(self)
+        UmlInterpreter.__init__(self)
 
     def create_db(self):
         db = DbWriter()
