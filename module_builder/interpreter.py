@@ -21,24 +21,6 @@ class Interpreter:
         self.all_my_errors = []
         self.my_db = None
 
-    @staticmethod
-    def find_relationship(relationship, class_name):
-        if relationship.startswith(class_name):
-            if len(relationship.split(" ")) < 2:
-                pass
-            if re.search(r"\*--", relationship):
-                com_class = relationship.split(" ")[4]
-                return tuple(("comp", com_class))
-            if re.search(r"--", relationship):
-                as_class = relationship.split(" ")[4]
-                return tuple(("assos", as_class))
-        elif relationship.endswith(class_name):
-            if len(relationship.split(" ")) < 2:
-                pass
-            if re.search(r"<\|--", relationship):
-                ext_class = relationship.split(" ")[0]
-                return tuple(("extends", ext_class))
-
     def add_class(self, class_name, attributes, methods, relationships):
         new_class = ClassBuilder()
         new_class.build_class(class_name, attributes, methods, relationships)
@@ -57,9 +39,9 @@ class Interpreter:
                 if line.find("(") != -1:
                     methods.append(line)
             for relationship in self.my_relationship_content.split("\n"):
-                if self.find_relationship(relationship, class_name):
+                if RelationshipFinder.find_relationship(relationship, class_name):
                     relationships.append(
-                        self.find_relationship(relationship, class_name))
+                        RelationshipFinder.find_relationship(relationship, class_name))
             self.add_class(class_name, attributes, methods, relationships)
 
     def add_module(self, new_module_name, new_classes):
@@ -108,6 +90,27 @@ class FileReader (Interpreter):
         except FileNotFoundError as e:
             self.all_my_errors.append(e)
             print("Error - File not found")
+
+
+class RelationshipFinder:
+
+    @classmethod
+    def find_relationship(cls, relationship, class_name):
+        if relationship.startswith(class_name):
+            if len(relationship.split(" ")) < 2:
+                pass
+            if re.search(r"\*--", relationship):
+                com_class = relationship.split(" ")[4]
+                return tuple(("comp", com_class))
+            if re.search(r"--", relationship):
+                as_class = relationship.split(" ")[4]
+                return tuple(("assos", as_class))
+        elif relationship.endswith(class_name):
+            if len(relationship.split(" ")) < 2:
+                pass
+            if re.search(r"<\|--", relationship):
+                ext_class = relationship.split(" ")[0]
+                return tuple(("extends", ext_class))
 
 
 class ModuleShelver (Interpreter):
