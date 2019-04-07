@@ -21,26 +21,6 @@ class Interpreter:
         self.all_my_errors = []
         self.my_db = None
 
-    def add_file(self, file_name, new_module_name):
-        self.my_file = file_name
-        self.read_file()
-        self.find_classes()
-        self.add_module(new_module_name, self.all_my_classbuilders)
-
-    def read_file(self):
-        try:
-            with open(self.my_file, "rt") as my_file:
-                contents = my_file.read()
-                class_results = re.split(r"}", contents)
-                self.my_relationship_content = \
-                    class_results[len(class_results) - 1]
-                class_results.remove(class_results[len(class_results) - 1])
-                for result in class_results:
-                    self.my_class_content.append(result)
-        except FileNotFoundError as e:
-            self.all_my_errors.append(e)
-            print("Error - File not found")
-
     @staticmethod
     def find_relationship(relationship, class_name):
         if relationship.startswith(class_name):
@@ -101,8 +81,40 @@ class Interpreter:
                     print("Error - Directory does not exist")
 
 
+class FileReader (Interpreter):
+
+    def __init__(self):
+        Interpreter.__init__(self)
+        self.my_relationship_content = ""
+        self.my_class_content = []
+        self.all_my_errors = []
+
+    def add_file(self, file_name, new_module_name):
+        self.my_file = file_name
+        self.read_file()
+        self.find_classes()
+        self.add_module(new_module_name, self.all_my_classbuilders)
+
+    def read_file(self):
+        try:
+            with open(self.my_file, "rt") as my_file:
+                contents = my_file.read()
+                class_results = re.split(r"}", contents)
+                self.my_relationship_content = \
+                    class_results[len(class_results) - 1]
+                class_results.remove(class_results[len(class_results) - 1])
+                for result in class_results:
+                    self.my_class_content.append(result)
+        except FileNotFoundError as e:
+            self.all_my_errors.append(e)
+            print("Error - File not found")
+
+
 class ModuleShelver (Interpreter):
     """shelves the module data to a file"""
+
+    def __init__(self):
+        Interpreter.__init__(self)
 
     def shelve_modules(self, shelf_file):
         shelf = Shelver(shelf_file)
@@ -113,6 +125,9 @@ class ModuleShelver (Interpreter):
 
 class DbCreator (Interpreter):
     """creates a database writer class"""
+
+    def __init__(self):
+        Interpreter.__init__(self)
 
     def create_db(self):
         db = DbWriter()
