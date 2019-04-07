@@ -106,6 +106,10 @@ class Interpreter:
             shelf.shelve_modules(a_module)
         self.my_shelf = shelf.my_shelf_file
 
+
+class DbCreator (Interpreter):
+    """creates a database writer class"""
+
     def create_db(self):
         db = DbWriter()
         for a_module in self.all_my_modules:
