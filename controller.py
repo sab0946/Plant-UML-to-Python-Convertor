@@ -1,4 +1,4 @@
-from .module_builder.interpreter import Interpreter
+from module_builder.interpreter import Interpreter, DbCreator, ModuleShelver
 import sys
 import cmd
 from plantweb.render import render_file
@@ -88,7 +88,7 @@ class Main(cmd.Cmd):
         elif self.source_file is None:
             print("Please enter the source file : source xxxx")
         else:
-            uml_shelf = Interpreter()
+            uml_shelf = ModuleShelver()
             uml_shelf.add_file(self.source_file, self.write_folder)
             if self.root_directory:
                 uml_shelf.shelve_modules(self.root_directory + "/" + line)
@@ -102,7 +102,7 @@ class Main(cmd.Cmd):
         elif self.source_file is None:
             print("Please enter the source file : source xxxx")
         else:
-            uml_db = Interpreter()
+            uml_db = DbCreator()
             uml_db.add_file(self.source_file, self.write_folder)
             self.db = uml_db.create_db()
 
