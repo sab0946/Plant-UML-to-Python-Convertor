@@ -100,6 +100,10 @@ class Interpreter:
                     self.all_my_errors.append(e)
                     print("Error - Directory does not exist")
 
+
+class ModuleShelver (Interpreter):
+    """shelves the module data to a file"""
+
     def shelve_modules(self, shelf_file):
         shelf = Shelver(shelf_file)
         for a_module in self.all_my_modules:
