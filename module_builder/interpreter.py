@@ -1,46 +1,28 @@
 import re
-from .class_builder import ClassBuilder
-from .module import Module
-from .shelver import Shelver
-from .db_writer import DbWriter
-from .class_finder import ClassFinder
+from module_builder.class_adder import ClassAdder
+from module_builder.module_adder import ModuleAdder
+from module_builder.shelver import Shelver
+from module_builder.db_writer import DbWriter
+from module_builder.class_finder import ClassFinder
 
 
-class Interpreter:
+class FileReader:
 
     def __init__(self):
         self.my_file = ""
-        self.my_shelf = None
         self.my_class_content = []
         self.my_relationship_content = ""
         self.all_my_classbuilders = []
         self.all_my_modules = []
         self.all_my_errors = []
-        self.my_db = None
-
-    def add_class(self, class_name, attributes, methods, relationships):
-        new_class = ClassBuilder()
-        new_class.build_class(class_name, attributes, methods, relationships)
-        self.all_my_classbuilders.append(new_class)
-
-    def add_module(self, new_module_name, new_classes):
-        new_module = Module()
-        new_module.create_module(new_module_name, new_classes)
-        self.all_my_modules.append(new_module)
-
-
-class FileReader (Interpreter):
-
-    def __init__(self):
-        Interpreter.__init__(self)
 
     def add_file(self, file_name, new_module_name):
         self.my_file = file_name
         self.read_file()
         my_classes = ClassFinder.find_classes(self.my_class_content, self.my_relationship_content)
         for a_class in my_classes:
-            self.add_class(a_class[0], a_class[1], a_class[2], a_class[3])
-        self.add_module(new_module_name, self.all_my_classbuilders)
+            self.all_my_classbuilders.append(ClassAdder.add_class(a_class[0], a_class[1], a_class[2], a_class[3]))
+        self.all_my_modules.append(ModuleAdder.add_module(new_module_name, self.all_my_classbuilders))
 
     def read_file(self):
         try:
@@ -57,10 +39,10 @@ class FileReader (Interpreter):
             print("Error - File not found")
 
 
-class ModuleWriter(Interpreter):
+class ModuleWriter(FileReader):
 
     def __init__(self):
-        Interpreter.__init__(self)
+        FileReader.__init__(self)
 
     def write_modules(self):
         for a_module in self.all_my_modules:
@@ -76,12 +58,11 @@ class ModuleWriter(Interpreter):
                     print("Error - Directory does not exist")
 
 
-class UmlInterpreter(FileReader, ModuleWriter):
+class UmlInterpreter(ModuleWriter):
 
     language = "Plant UML"
 
     def __init__(self):
-        FileReader.__init__(self)
         ModuleWriter.__init__(self)
 
     def interpret(self, source_file, write_folder):
@@ -94,6 +75,7 @@ class ModuleShelver (UmlInterpreter):
 
     def __init__(self):
         UmlInterpreter.__init__(self)
+        self.my_shelf = None
 
     def shelve_modules(self, shelf_file):
         shelf = Shelver(shelf_file)
@@ -107,6 +89,7 @@ class DbCreator (UmlInterpreter):
 
     def __init__(self):
         UmlInterpreter.__init__(self)
+        self.my_db = None
 
     def create_db(self):
         db = DbWriter()
