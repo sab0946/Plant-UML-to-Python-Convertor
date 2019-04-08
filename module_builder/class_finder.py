@@ -1,5 +1,6 @@
 from .relationship_finder import RelationshipFinder
 
+
 class ClassFinder:
 
     class_list = []
@@ -24,4 +25,3 @@ class ClassFinder:
             new_tuple = (class_name, attributes, methods, relationships)
             cls.class_list.append(new_tuple)
         return cls.class_list
-
