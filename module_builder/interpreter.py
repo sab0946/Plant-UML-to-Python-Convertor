@@ -3,13 +3,10 @@ from .class_builder import ClassBuilder
 from .module import Module
 from .shelver import Shelver
 from .db_writer import DbWriter
+from .class_finder import ClassFinder
 
 
 class Interpreter:
-
-    """interpret the plant UML file and create a list of classes"""
-
-    language = "Plant UML"
 
     def __init__(self):
         self.my_file = ""
@@ -60,53 +57,6 @@ class FileReader (Interpreter):
             print("Error - File not found")
 
 
-class ClassFinder:
-
-    class_list = []
-
-    @classmethod
-    def find_classes(cls, class_content_list, relationship_content):
-        for class_info in class_content_list:
-            class_name = class_info.split(' ')[1]
-            attributes = []
-            methods = []
-            relationships = []
-            for line in class_info.split("\n"):
-                if line.find(":") != -1 and line.find("(") == -1:
-                    attributes.append(line)
-            for line in class_info.split("\n"):
-                if line.find("(") != -1:
-                    methods.append(line)
-            for relationship in relationship_content.split("\n"):
-                if RelationshipFinder.find_relationship(relationship, class_name):
-                    relationships.append(
-                        RelationshipFinder.find_relationship(relationship, class_name))
-            new_tuple = (class_name, attributes, methods, relationships)
-            cls.class_list.append(new_tuple)
-        return cls.class_list
-
-
-class RelationshipFinder:
-
-    @classmethod
-    def find_relationship(cls, relationship, class_name):
-        if relationship.startswith(class_name):
-            if len(relationship.split(" ")) < 2:
-                pass
-            if re.search(r"\*--", relationship):
-                com_class = relationship.split(" ")[4]
-                return tuple(("comp", com_class))
-            if re.search(r"--", relationship):
-                as_class = relationship.split(" ")[4]
-                return tuple(("assos", as_class))
-        elif relationship.endswith(class_name):
-            if len(relationship.split(" ")) < 2:
-                pass
-            if re.search(r"<\|--", relationship):
-                ext_class = relationship.split(" ")[0]
-                return tuple(("extends", ext_class))
-
-
 class ModuleWriter(Interpreter):
 
     def __init__(self):
@@ -127,6 +77,8 @@ class ModuleWriter(Interpreter):
 
 
 class UmlInterpreter(FileReader, ModuleWriter):
+
+    language = "Plant UML"
 
     def __init__(self):
         FileReader.__init__(self)
