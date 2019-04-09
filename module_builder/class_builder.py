@@ -11,7 +11,6 @@ class ClassBuilder:
 
     def __init__(self):
         self.name = ""
-        self.relationships = []
         self.all_my_attributes = []
         self.all_my_methods = []
         self.all_my_parent_classes = []
@@ -32,25 +31,24 @@ class ClassBuilder:
                                     + 1:a_method.find(")")])
             self.all_my_methods.append(new_m)
 
-    def add_relationships(self):
-        for a_relationship in self.relationships:
+    def add_relationships(self, new_relationships):
+        for a_relationship in new_relationships:
             if "extends" in a_relationship:
                 new_relationship = Relationship(a_relationship)
                 self.all_my_parent_classes.append(new_relationship)
-            if "comp" in a_relationship:
+            elif "comp" in a_relationship:
                 new_relationship = Relationship(a_relationship)
                 self.all_my_composite_classes.append(new_relationship)
-            if "assos" in a_relationship:
+            elif "assos" in a_relationship:
                 new_relationship = Relationship(a_relationship)
                 self.all_my_associated_classes.append(new_relationship)
 
     def build_class(
             self, new_name, new_attributes, new_methods, new_relationships):
         self.name = new_name
-        self.relationships = new_relationships
         self.add_class_attributes(new_attributes)
         self.add_class_methods(new_methods)
-        self.add_relationships()
+        self.add_relationships(new_relationships)
 
     def print_class(self):
         string = ""
