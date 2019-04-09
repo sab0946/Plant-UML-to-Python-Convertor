@@ -5,10 +5,6 @@ from .relationship import Relationship
 
 class ClassBuilder:
 
-    """Create an instance of the object ClassBuilder
-    that contains a list of the objects attributes, methods
-    and relationships"""
-
     def __init__(self):
         self.name = ""
         self.all_my_attributes = []
@@ -44,20 +40,19 @@ class ClassBuilder:
                 self.all_my_associated_classes.append(new_relationship)
 
     def build_class(
-            self, new_name, new_attributes, new_methods, new_relationships):
-        self.name = new_name
-        self.add_class_attributes(new_attributes)
-        self.add_class_methods(new_methods)
-        self.add_relationships(new_relationships)
+            self, args):
+        self.name = args[0]
+        self.add_class_attributes(args[1])
+        self.add_class_methods(args[2])
+        self.add_relationships(args[3])
 
-    def print_class(self):
+    def __str__(self):
         string = ""
         string += f"class {self.name}"
         if len(self.all_my_parent_classes) > 0:
             for a_class in self.all_my_parent_classes:
                 string += f"({a_class})"
-        string += ":\n"
-        string += "\n    def __init__(self):\n"
+        string += ":\n\n    def __init__(self):\n"
         for x in self.all_my_attributes:
             string += f"{x}"
         if len(self.all_my_composite_classes) > 0:
