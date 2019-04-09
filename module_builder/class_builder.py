@@ -22,17 +22,16 @@ class ClassBuilder:
 
     def add_class_attributes(self):
         for an_attribute in self.attributes:
-            new_a_name = an_attribute.split(":")[0]
-            new_a_return = an_attribute.split(":")[1]
-            new_a = Attribute(new_a_name, new_a_return)
+            new_a = Attribute(an_attribute.split(":")[0],
+                              an_attribute.split(":")[1])
             self.all_my_attributes.append(new_a)
 
     def add_class_methods(self):
         for a_method in self.methods:
-            new_m_name = a_method.split("(")[0]
-            new_m_return = a_method.split(")")[1]
-            new_m_input = a_method[a_method.find("(") + 1:a_method.find(")")]
-            new_m = Method(new_m_name, new_m_return, new_m_input)
+            new_m = Method(a_method.split("(")[0],
+                           a_method.split(")")[1],
+                           a_method[a_method.find("(")
+                                    + 1:a_method.find(")")])
             self.all_my_methods.append(new_m)
 
     def add_relationships(self):
