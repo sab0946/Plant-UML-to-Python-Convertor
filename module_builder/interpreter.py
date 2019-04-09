@@ -21,7 +21,7 @@ class FileReader:
         self.read_file()
         my_classes = ClassFinder.find_classes(self.my_class_content, self.my_relationship_content)
         for a_class in my_classes:
-            self.all_my_classbuilders.append(ClassAdder.add_class(a_class[0], a_class[1], a_class[2], a_class[3]))
+            self.all_my_classbuilders.append(ClassAdder.add_class(a_class))
         self.all_my_modules.append(ModuleAdder.add_module(new_module_name, self.all_my_classbuilders))
 
     def read_file(self):
