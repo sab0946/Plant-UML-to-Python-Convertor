@@ -30,17 +30,16 @@ class ClassBuilder:
     def add_relationships(self, new_relationships):
         for a_relationship in new_relationships:
             if "extends" in a_relationship:
-                new_relationship = Relationship(a_relationship)
-                self.all_my_parent_classes.append(new_relationship)
+                self.all_my_parent_classes.append(
+                    Relationship(a_relationship))
             elif "comp" in a_relationship:
-                new_relationship = Relationship(a_relationship)
-                self.all_my_composite_classes.append(new_relationship)
+                self.all_my_composite_classes.append(
+                    Relationship(a_relationship))
             elif "assos" in a_relationship:
-                new_relationship = Relationship(a_relationship)
-                self.all_my_associated_classes.append(new_relationship)
+                self.all_my_associated_classes.append(
+                    Relationship(a_relationship))
 
-    def build_class(
-            self, args):
+    def build_class(self, args):
         self.name = args[0]
         self.add_class_attributes(args[1])
         self.add_class_methods(args[2])
