@@ -5,10 +5,6 @@ from .relationship import Relationship
 
 class ClassBuilder:
 
-    """Create an instance of the object ClassBuilder
-    that contains a list of the objects attributes, methods
-    and relationships"""
-
     def __init__(self):
         self.name = ""
         self.all_my_attributes = []
