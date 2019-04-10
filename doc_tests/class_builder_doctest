@@ -1,13 +1,19 @@
 """
 >>> from module_builder.class_builder import ClassBuilder
+>>> args = ["ClassName", ["attribute1: string"], ["Method1(input):integer"], [("comp", "Class2")]]
 >>> a = ClassBuilder()
->>> a.build_class("ClassName", ["attribute1: string"], ["Method1(input):integer"], [("comp", "Class2")])
+>>> a.build_class(args)
 >>> print(a.name)
 ClassName
->>> print(a.attributes)
-['attribute1: string']
->>> print(a.methods)
-['Method1(input):integer']
+>>> print(a.all_my_attributes[0])
+        self.attribute1: str = ""  # ToDo
+<BLANKLINE>
+>>> print(a.all_my_methods[0])
+    def Method1(self, input) ->:
+        # ToDo
+        pass
+<BLANKLINE>
+<BLANKLINE>
 >>> print(len(a.all_my_attributes))
 1
 >>> print(len(a.all_my_methods))
@@ -16,7 +22,17 @@ ClassName
 1
 >>> print(a.all_my_composite_classes[0])
 class2s
->>> print(a.relationships)
-[('comp', 'Class2')]
+>>> print(a)
+class ClassName:
+<BLANKLINE>
+    def __init__(self):
+        self.attribute1: str = ""  # ToDo
+        self.all_my_class2s = []
+<BLANKLINE>
+    def Method1(self, input) ->:
+        # ToDo
+        pass
+<BLANKLINE>
+<BLANKLINE>
 
 """
