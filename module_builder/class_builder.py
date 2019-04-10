@@ -61,3 +61,6 @@ class ClassBuilder:
         for x in self.all_my_methods:
             string += f"{x}"
         return string
+
+    def print_class(self):
+        return self.__str__()
