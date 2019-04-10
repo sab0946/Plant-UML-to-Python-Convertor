@@ -23,8 +23,8 @@ class ClassBuilder:
         for a_method in new_methods:
             new_m = Method(a_method.split("(")[0],
                            a_method.split(")")[1],
-                           a_method[a_method.find("(")
-                                    + 1:a_method.find(")")])
+                           a_method[
+                           a_method.find("(") + 1:a_method.find(")")])
             self.all_my_methods.append(new_m)
 
     def add_relationships(self, new_relationships):
