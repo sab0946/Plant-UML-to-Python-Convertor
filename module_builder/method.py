@@ -1,5 +1,6 @@
 from .type_finder import TypeFinder
 
+
 class Method:
 
     """Define the methods for each class"""

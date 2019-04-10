@@ -16,23 +16,24 @@ class FileReader:
         self.all_my_modules = []
         self.all_my_errors = []
 
-    def add_class(cls, args):
+    def add_class(self, args):
         new_class = ClassBuilder()
         new_class.build_class(args)
-        return new_class
+        self.all_my_classbuilders.append(new_class)
 
-    def add_module(cls, new_module_name, new_classes):
+    def add_module(self, new_module_name, new_classes):
         new_module = Module()
         new_module.create_module(new_module_name, new_classes)
-        return new_module
+        self.all_my_modules.append(new_module)
 
     def add_file(self, file_name, new_module_name):
         self.my_file = file_name
         self.read_file()
-        my_classes = ClassFinder.find_classes(self.my_class_content, self.my_relationship_content)
+        my_classes = ClassFinder.find_classes(self.my_class_content,
+                                              self.my_relationship_content)
         for a_class in my_classes:
-            self.all_my_classbuilders.append(self.add_class(a_class))
-        self.all_my_modules.append(self.add_module(new_module_name, self.all_my_classbuilders))
+            self.add_class(a_class)
+        self.add_module(new_module_name, self.all_my_classbuilders)
 
     def read_file(self):
         try:
