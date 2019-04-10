@@ -1,6 +1,6 @@
 import re
-from module_builder.class_adder import ClassAdder
-from module_builder.module_adder import ModuleAdder
+from module_builder.class_builder import ClassBuilder
+from module_builder.module import Module
 from module_builder.shelver import Shelver
 from module_builder.db_writer import DbWriter
 from module_builder.class_finder import ClassFinder
@@ -16,13 +16,23 @@ class FileReader:
         self.all_my_modules = []
         self.all_my_errors = []
 
+    def add_class(cls, args):
+        new_class = ClassBuilder()
+        new_class.build_class(args)
+        return new_class
+
+    def add_module(cls, new_module_name, new_classes):
+        new_module = Module()
+        new_module.create_module(new_module_name, new_classes)
+        return new_module
+
     def add_file(self, file_name, new_module_name):
         self.my_file = file_name
         self.read_file()
         my_classes = ClassFinder.find_classes(self.my_class_content, self.my_relationship_content)
         for a_class in my_classes:
-            self.all_my_classbuilders.append(ClassAdder.add_class(a_class))
-        self.all_my_modules.append(ModuleAdder.add_module(new_module_name, self.all_my_classbuilders))
+            self.all_my_classbuilders.append(self.add_class(a_class))
+        self.all_my_modules.append(self.add_module(new_module_name, self.all_my_classbuilders))
 
     def read_file(self):
         try:
