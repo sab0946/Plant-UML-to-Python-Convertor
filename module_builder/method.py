@@ -1,3 +1,5 @@
+from .type_finder import TypeFinder
+
 class Method:
 
     """Define the methods for each class"""
@@ -7,22 +9,9 @@ class Method:
         self.input = new_input.replace("()", "")
         self.return_type = self.get_return(new_return)
 
-    @staticmethod
-    def find_type(new_type):
-        if "string" in new_type:
-            return "str"
-        elif "number" in new_type:
-            return "int"
-        elif "list" in new_type:
-            return "list"
-        elif "tuple" in new_type:
-            return "tuple"
-        else:
-            return None
-
     def get_return(self, new_return):
         if new_return:
-            return self.find_type(new_return)
+            return TypeFinder.find_type(new_return)
         else:
             return "pass"
 
