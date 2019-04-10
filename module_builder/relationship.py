@@ -4,17 +4,15 @@ class Relationship:
 
     def __init__(self, new_type, my_class_builder=None):
         self.my_class_builder = my_class_builder
-        self.name = new_type[1].lower() + "s"
+        self.name = new_type[1].lower()
         self.type = new_type[0]
         self.method_name = "add_" + str(self.type)
-
-    def __str__(self):
-        return f"{self.name}s"
 
     def return_type(self):
         return self.type
 
     def add_comp(self):
+        self.name += "s"
         self.my_class_builder.all_my_composite_classes.append(self.name)
 
     def add_assos(self):
