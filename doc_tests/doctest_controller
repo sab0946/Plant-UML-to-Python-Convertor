@@ -4,6 +4,8 @@
 >>> source = 'class_diagram_plantUML'
 >>> write_folder = 'test_result'
 >>> controller = Main()
+>>> controller.do_interpret("")
+expected str, bytes or os.PathLike object, not NoneType
 >>> print(controller.root_directory)
 None
 >>> controller.do_root(root)
@@ -15,6 +17,10 @@ Error - File not found
 looking for file at c:/test/wrong
 >>> controller.do_source("blank.txt")
 Error - File must contain plant UML
+>>> controller.do_source("blank_plant.txt")
+Source file to interpret is: c:/test/c:/test/blank_plant.txt
+>>> controller.do_interpret("")
+'NoneType' object has no attribute 'lower'
 >>> controller.do_source(source)
 Source file to interpret is: c:/test/c:/test/class_diagram_plantUML
 >>> controller.do_write_folder(write_folder)

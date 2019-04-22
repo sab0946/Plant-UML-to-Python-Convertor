@@ -1,7 +1,11 @@
 """
 >>> from module_builder.class_builder import ClassBuilder
->>> args = ["ClassName", ["attribute1: string"], ["Method1(input):integer"], [("comp", "Class2")]]
+>>> args = ["ClassName", ["attribute1: string"], ["Method1(input):integer"], [("comp", "Class2"), ("extends", "parent")]]
 >>> a = ClassBuilder()
+>>> a.print_class()
+'class :\n\n    def __init__(self):\n\n'
+>>> isinstance(a.print_class(), str)
+True
 >>> a.build_class(args)
 >>> print(a.name)
 ClassName
@@ -22,8 +26,12 @@ ClassName
 1
 >>> print(a.all_my_composite_classes[0])
 class2s
+>>> print(len(a.all_my_parent_classes))
+1
+>>> print(a.all_my_parent_classes[0])
+parent
 >>> print(a)
-class ClassName:
+class ClassName(parent):
 <BLANKLINE>
     def __init__(self):
         self.attribute1: str = ""  # ToDo
@@ -34,5 +42,11 @@ class ClassName:
         pass
 <BLANKLINE>
 <BLANKLINE>
+>>> a.print_class()
+'class ClassName(parent):\n\n    def __init__(self):\n        self.attribute1: str = ""  # ToDo\n        self.all_my_class2s = []\n\n    def Method1(self, input) ->:\n        # ToDo\n        pass\n\n'
+>>> isinstance(a.print_class(), str)
+True
+>>> isinstance(a.__str__(), str)
+True
 
 """
