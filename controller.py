@@ -30,7 +30,8 @@ class Help:
 
     @staticmethod
     def help_check_file():
-        print("Use this function to check if your file is suitable for translation")
+        print("Use this function to check if your file "
+              "is suitable for translation")
 
     @staticmethod
     def help_print_uml():
@@ -49,15 +50,19 @@ class Help:
         print("""
             ***Plant UML to Python Interpreter***
 
-            check_file      Checks that the surce file is a text file and that it contains plantUML
+            check_file      Checks that the surce file is a text file 
+                            and that it contains plantUML
             i_shelve        Shelves all the classes in the module as objects
             make_db         Write the module to a database
             write_db        Prints the information in the database
             source          Sets the source file to interpret
             write_folder    Sets the folder to write the module to
-            interpret       Reads the source file, and writes each class to a seperate Python file
-            print_uml       Prints a png file of the PlantUML diagram from the source file
-            root            Change the root directory for the source file and written files
+            interpret       Reads the source file, and writes each class to 
+                            a separate Python file
+            print_uml       Prints a png file of the PlantUML diagram from
+                            the source file
+            root            Change the root directory for the source file
+                            and written files
             quit            Quit the program
             """)
 
@@ -184,6 +189,7 @@ if __name__ == '__main__':  # pragma: no cover
         else:
             print("Error - please select a text file")
     elif len(sys.argv) > 3:
-        print("Error - please only input the source file followed by the write directory")
+        print("Error - please only input the source "
+              "file followed by the write directory")
     else:
         Main().cmdloop()
