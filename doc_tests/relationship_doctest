@@ -10,5 +10,7 @@ extends
 class3
 >>> print(a.type)
 comp
+>>> a.return_type()
+'comp'
 
 """
