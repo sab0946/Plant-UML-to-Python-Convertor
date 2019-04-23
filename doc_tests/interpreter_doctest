@@ -1,19 +1,35 @@
 """
 >>> from module_builder.interpreter import UmlInterpreter
+>>> e = UmlInterpreter()
+>>> e.interpret('wrong', 'test')
+Error - File not found
+>>> print(len(e.all_my_errors))
+1
+>>> e.interpret('c:/test/class_diagram_plantUML', 'not a directory')
+Error - Directory does not exist
+Error - Directory does not exist
+Error - Directory does not exist
+Error - Directory does not exist
+Error - Directory does not exist
+Error - Directory does not exist
+>>> print(len(e.all_my_errors))
+7
 >>> a = UmlInterpreter()
->>> a.add_file('c:/test/class_diagram_plantUML', 'test_result')
+>>> a.interpret('c:/test/class_diagram_plantUML', 'test')
 >>> print(a.my_file)
 c:/test/class_diagram_plantUML
+>>> isinstance(a.my_class_content[0], str)
+True
 >>> print(len(a.all_my_modules))
 1
 >>> print(len(a.all_my_classbuilders))
-6
+12
 >>> print(a.all_my_classbuilders[1].name)
 Module
 >>> print(len(a.all_my_errors))
 0
 >>> print(a.all_my_modules[0].module_name)
-test_result
+test
 >>> a_class = a.all_my_classbuilders[1]
 >>> print(len(a_class.all_my_attributes))
 1

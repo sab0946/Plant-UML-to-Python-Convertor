@@ -11,6 +11,6 @@ str
 >>> print(a.input)
 <BLANKLINE>
 >>> print(a.return_type)
-pass
+<BLANKLINE>
 
 """
