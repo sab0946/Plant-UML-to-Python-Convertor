@@ -1,4 +1,4 @@
-from .type_finder import TypeFinder
+from module_builder.type_finder import TypeFinder
 
 
 class Method:

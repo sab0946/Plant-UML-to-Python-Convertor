@@ -1,6 +1,6 @@
 import re
-from module_builder.class_builder import ClassBuilder
-from module_builder.module import Module
+from module_builder.class_builder import Director, PythonClassBuilder, ModuleComposite
+# from module_builder.module import Module
 from module_builder.shelver import Shelver
 from module_builder.db_writer import DbWriter
 from module_builder.class_finder import ClassFinder
@@ -17,12 +17,13 @@ class FileReader:
         self.all_my_errors = []
 
     def add_class(self, args):
-        new_class = ClassBuilder()
-        new_class.build_class(args)
-        self.all_my_classbuilders.append(new_class)
+        mb = PythonClassBuilder()
+        md = Director(mb)
+        md.build_class(args)
+        self.all_my_classbuilders.append(mb.get_class())
 
     def add_module(self, new_module_name, new_classes):
-        new_module = Module()
+        new_module = ModuleComposite()
         new_module.create_module(new_module_name, new_classes)
         self.all_my_modules.append(new_module)
 

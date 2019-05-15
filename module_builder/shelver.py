@@ -10,4 +10,4 @@ class Shelver:
 
     def shelve_modules(self, new_module):
         with open(self.my_shelf_file) as d:
-            d[new_module.write_files()[0]] = new_module
+            d[new_module.write_data()[0]] = new_module
