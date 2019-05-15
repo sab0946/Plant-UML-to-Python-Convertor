@@ -1,9 +1,73 @@
-from .method import Method
-from .attribute import Attribute
-from .relationship import Relationship
+from module_builder.method import Method
+from module_builder.attribute import Attribute
+from module_builder.relationship import Relationship
+from abc import ABCMeta, abstractmethod
 
 
-class ClassBuilder:
+#  Abstract builder - defines the interface for the concrete builders
+class AbstractClassBuilder(metaclass=ABCMeta):
+    @abstractmethod
+    def add_class_name(self, name):
+        pass
+
+    @abstractmethod
+    def add_class_attributes(self, new_attributes):
+        pass
+
+    @abstractmethod
+    def add_class_methods(self, new_methods):
+        pass
+
+    @abstractmethod
+    def add_relationships(self, relationships):
+        pass
+
+
+#  the Python Concrete builder - builds class data to write a python file
+class PythonClassBuilder(AbstractClassBuilder):
+    def __init__(self):
+        self.new_class = PythonClass()
+
+    def add_class_name(self, name):
+        self.new_class.name = name
+
+    def add_class_attributes(self, new_attributes):
+        for an_attribute in new_attributes:
+            new_a = Attribute(an_attribute.split(":")[0],
+                              an_attribute.split(":")[1])
+            self.new_class.all_my_attributes.append(new_a)
+
+    def add_class_methods(self, new_methods):
+        for a_method in new_methods:
+            new_m = Method(a_method.split("(")[0],
+                           a_method.split(")")[1],
+                           a_method[
+                           a_method.find("(") + 1:a_method.find(")")])
+            self.new_class.all_my_methods.append(new_m)
+
+    def add_relationships(self, relationships):
+        for a_relationship in relationships:
+            new_relationship = Relationship(a_relationship, self)
+            new_relationship.add_relationship()
+
+    def get_class(self):
+        return self.new_class
+
+
+#  Director Class - instructs the builder what to build
+class Director(object):
+    def __init__(self, b):
+        self.my_builder = b
+
+    def build_class(self, args):
+        self.my_builder.add_class_name(args[0])
+        self.my_builder.add_class_attributes(args[1])
+        self.my_builder.add_class_methods(args[2])
+        self.my_builder.add_relationships(args[3])
+
+
+#  Python Class - the product that the builder builds
+class PythonClass:
 
     def __init__(self):
         self.name = ""
@@ -12,31 +76,6 @@ class ClassBuilder:
         self.all_my_parent_classes = []
         self.all_my_composite_classes = []
         self.all_my_associated_classes = []
-
-    def add_class_attributes(self, new_attributes):
-        for an_attribute in new_attributes:
-            new_a = Attribute(an_attribute.split(":")[0],
-                              an_attribute.split(":")[1])
-            self.all_my_attributes.append(new_a)
-
-    def add_class_methods(self, new_methods):
-        for a_method in new_methods:
-            new_m = Method(a_method.split("(")[0],
-                           a_method.split(")")[1],
-                           a_method[
-                           a_method.find("(") + 1:a_method.find(")")])
-            self.all_my_methods.append(new_m)
-
-    def add_relationships(self, new_relationships):
-        for a_relationship in new_relationships:
-            new_relationship = Relationship(a_relationship, self)
-            new_relationship.add_relationship()
-
-    def build_class(self, args):
-        self.name = args[0]
-        self.add_class_attributes(args[1])
-        self.add_class_methods(args[2])
-        self.add_relationships(args[3])
 
     def __str__(self):
         string = ""
