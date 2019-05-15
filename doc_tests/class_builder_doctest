@@ -1,35 +1,28 @@
 """
->>> from module_builder.class_builder import ClassBuilder
+>>> from module_builder.class_builder import Director, PythonClassBuilder, PythonClass
 >>> args = ["ClassName", ["attribute1: string"], ["Method1(input):integer"], [("comp", "Class2"), ("extends", "parent")]]
->>> a = ClassBuilder()
->>> a.print_class()
+>>> mb = PythonClassBuilder()
+>>> md = Director(mb)
+>>> p = PythonClass()
+>>> p.write_files()
 'class :\n\n    def __init__(self):\n\n'
->>> isinstance(a.print_class(), str)
+>>> isinstance(p.write_files(), str)
 True
->>> a.build_class(args)
+>>> md.build_class(args)
+>>> a = mb.get_class()
 >>> print(a.name)
 ClassName
->>> print(a.all_my_attributes[0])
+>>> print(a.children[0])
         self.attribute1: str = ""  # ToDo
 <BLANKLINE>
->>> print(a.all_my_methods[0])
+>>> print(a.children[1])
     def Method1(self, input) ->:
         # ToDo
         pass
 <BLANKLINE>
 <BLANKLINE>
->>> print(len(a.all_my_attributes))
-1
->>> print(len(a.all_my_methods))
-1
->>> print(len(a.all_my_composite_classes))
-1
->>> print(a.all_my_composite_classes[0])
-class2s
->>> print(len(a.all_my_parent_classes))
-1
->>> print(a.all_my_parent_classes[0])
-parent
+>>> print(len(a.children))
+4
 >>> print(a)
 class ClassName(parent):
 <BLANKLINE>
@@ -42,9 +35,9 @@ class ClassName(parent):
         pass
 <BLANKLINE>
 <BLANKLINE>
->>> a.print_class()
+>>> a.write_files()
 'class ClassName(parent):\n\n    def __init__(self):\n        self.attribute1: str = ""  # ToDo\n        self.all_my_class2s = []\n\n    def Method1(self, input) ->:\n        # ToDo\n        pass\n\n'
->>> isinstance(a.print_class(), str)
+>>> isinstance(a.write_files(), str)
 True
 >>> isinstance(a.__str__(), str)
 True
