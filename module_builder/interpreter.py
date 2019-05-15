@@ -1,5 +1,5 @@
 import re
-from module_builder.class_builder import ClassBuilder
+from module_builder.class_builder import Director, PythonClassBuilder, PythonClass
 from module_builder.module import Module
 from module_builder.shelver import Shelver
 from module_builder.db_writer import DbWriter
@@ -17,9 +17,10 @@ class FileReader:
         self.all_my_errors = []
 
     def add_class(self, args):
-        new_class = ClassBuilder()
-        new_class.build_class(args)
-        self.all_my_classbuilders.append(new_class)
+        mb = PythonClassBuilder()
+        md = Director(mb)
+        md.build_class(args)
+        self.all_my_classbuilders.append(mb.get_class())
 
     def add_module(self, new_module_name, new_classes):
         new_module = Module()
@@ -57,8 +58,8 @@ class ModuleWriter(FileReader):
 
     def write_modules(self):
         for a_module in self.all_my_modules:
-            root_name = a_module.write_files()[0]
-            folder_content = a_module.write_files()[1]
+            root_name = a_module.write_data()[0]
+            folder_content = a_module.write_data()[1]
             for a_folder in folder_content:
                 try:
                     file_name = f"{root_name}/{a_folder[0]}"
