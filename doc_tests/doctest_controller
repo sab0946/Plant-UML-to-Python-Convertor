@@ -1,7 +1,7 @@
 """
 >>> from controller import Main
 >>> root = 'c:/test'
->>> source = 'class_diagram_plantUML'
+>>> source = 'class_diagram_plantUML.txt'
 >>> write_folder = 'test_result'
 >>> controller = Main()
 >>> controller.do_interpret("")
@@ -10,8 +10,8 @@ expected str, bytes or os.PathLike object, not NoneType
 Please enter the directory to write files to : write_folder xxxx
 >>> print(controller.root_directory)
 None
->>> controller.do_source("c:/test/class_diagram_plantUML")
-Source file to interpret is: c:/test/class_diagram_plantUML
+>>> controller.do_source("c:/test/class_diagram_plantUML.txt")
+Source file to interpret is: c:/test/class_diagram_plantUML.txt
 >>> controller.do_print_uml("")
 ==> OUTPUT FILE:
 printed_uml.png
@@ -36,7 +36,7 @@ Source file to interpret is: c:/test/c:/test/blank_plant.txt
 >>> controller.do_interpret("")
 'NoneType' object has no attribute 'lower'
 >>> controller.do_source(source)
-Source file to interpret is: c:/test/c:/test/class_diagram_plantUML
+Source file to interpret is: c:/test/c:/test/class_diagram_plantUML.txt
 >>> controller.do_write_folder(write_folder)
 Folder to write files is: c:/test/test_result
 >>> controller.do_interpret('')
@@ -54,7 +54,7 @@ Root directory to read & write files is:  c:/test
 >>> controller.do_i_shelve('')
 Please enter the directory to write files to : write_folder xxxx
 >>> controller.do_source(source)
-Source file to interpret is: c:/test/c:/test/class_diagram_plantUML
+Source file to interpret is: c:/test/c:/test/class_diagram_plantUML.txt
 >>> controller.do_i_shelve('test_folder')
 Please enter the directory to write files to : write_folder xxxx
 >>> controller.do_write_folder(write_folder)
@@ -83,25 +83,6 @@ Print your source PlantUML file to a PNG
 Store the class data in a 'shelf' for later use
 >>> controller.help_quit()
 Quit the program
->>> controller.help_cmd()
-<BLANKLINE>
-            ***Plant UML to Python Interpreter***
-<BLANKLINE>
-            check_file      Checks that the surce file is a text file
-                            and that it contains plantUML
-            i_shelve        Shelves all the classes in the module as objects
-            make_db         Write the module to a database
-            write_db        Prints the information in the database
-            source          Sets the source file to interpret
-            write_folder    Sets the folder to write the module to
-            interpret       Reads the source file, and writes each class to a
-                            separate Python file
-            print_uml       Prints a png file of the PlantUML diagram from
-                            the source file
-            root            Change the root directory for the source file
-                            and written files
-            quit            Quit the program
-<BLANKLINE>
 >>> controller.do_quit()
 Closing Down
 True
